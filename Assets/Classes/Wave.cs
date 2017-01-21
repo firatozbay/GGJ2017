@@ -28,7 +28,9 @@ public class Wave : MonoBehaviour {
 		p.startColor = color;
 		lines[0].SetColors(color, color);
 		lines[1].SetColors(color, color);
-		for (int i = 0; i < particles.Length; i++) {
+        lines[0].sortingLayerName = "Foreground";
+        lines[1].sortingLayerName = "Foreground";
+        for (int i = 0; i < particles.Length; i++) {
 			particles[i] = Instantiate(p.gameObject).GetComponent<ParticleSystem>();
 			particles[i].transform.SetParent(gameObject.transform);
 		}

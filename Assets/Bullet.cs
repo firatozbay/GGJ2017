@@ -4,7 +4,7 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
     public float TIME_LEFT = 5;
     private float timer;
-
+    public int damage;
 	// Use this for initialization
 	void Start () {
         timer = TIME_LEFT;
@@ -24,9 +24,8 @@ public class Bullet : MonoBehaviour {
         if (col.gameObject.tag == "Meteor")
         {
             //Points
-            Destroy(col.gameObject);
+            col.gameObject.GetComponent<Meteor>().OnBullet(damage);
             Destroy(gameObject);
-            //toDo generate explosion
         }
     }
 }

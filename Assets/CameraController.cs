@@ -4,7 +4,6 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
     private Transform emmisionCenter;
-    private Transform cameraCenter;
 
     private float rotateSpeed;
     private float gravity;
@@ -19,7 +18,6 @@ public class CameraController : MonoBehaviour
                                             transform.position.y - (emmisionCenter.position.y - transform.parent.position.y),
                                             transform.position.z - (emmisionCenter.position.z - transform.parent.position.z));
         transform.parent.position = emmisionCenter.position;
-        cameraCenter = transform.parent;
     }
 
     // Update is called once per frame
