@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Emitter : MonoBehaviour {
-	private const float EMISSION_RATE = 2;
+	private const float EMISSION_RATE = 1f;
 
 	public GameObject wavePrefab;
 
