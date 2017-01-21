@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-
+    private Animator animator;
     public Transform EmmisionCenter;
     public CameraController camController;
     private Transform playerCenter;
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        animator = GetComponentInChildren<Animator>();
         transform.parent.position = EmmisionCenter.position;
         playerCenter = transform.parent;
         camCenter = camController.transform.parent;
@@ -23,6 +24,10 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
+        {
+            animator.SetTrigger("ButtonUp");
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Todo add animation
@@ -49,6 +54,10 @@ public class Player : MonoBehaviour {
         }
         if (RotatedDown(transform.position) && RotatedUp(transform.position))
         {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                animator.SetTrigger("PressLeft");
+            }
             if (Input.GetKey(KeyCode.A))
             {
                 transform.Translate(new Vector3(-0.05f, 0, 0));
@@ -58,10 +67,16 @@ public class Player : MonoBehaviour {
         {
             transform.Translate(new Vector3(-0.05f, 0, 0),Space.World);
         }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            animator.SetTrigger("PressRight");
+        }
         if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(new Vector3(0.05f, 0, 0));
         }
+
     }
     public bool Translated(Vector3 position)
     {
