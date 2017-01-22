@@ -60,7 +60,7 @@ public class Meteor : MonoBehaviour
     {
         if(col.gameObject.tag == "Player")
         {
-            Debug.Break();
+            GameManager.Instance.GameOver();
         }
     }
     public void OnBullet(int damage)

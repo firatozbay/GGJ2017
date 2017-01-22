@@ -2,25 +2,32 @@
 using System.Collections;
 
 public class MeteorGenerator : MonoBehaviour {
-    public float TimeGap = 2; 
+    public float[] timeGaps; 
     public GameObject[] meteors;
-    private float timer;
-    private int cnt;
+    private float[] timers;
+
     // Use this for initialization
     void Start () {
-        timer = TimeGap;
-        cnt = 0;
+        timers = new float[meteors.Length];
+        for (int i = 0; i < meteors.Length; i++)
+        {
+            timers[i] = timeGaps[i];
+        }
+
 	}
 
 	// Update is called once per frame
 	void Update () {
-        timer -= Time.deltaTime;
-        if(timer < 0)
+        for (int i = 0; i < meteors.Length; i++)
         {
-            //Generate Meteor
-            cnt = (cnt + 1) % meteors.Length;
-            Instantiate(meteors[cnt]);
-            timer = TimeGap;
-        }    
+            timers[i] -= Time.deltaTime;
+
+            if (timers[i] < 0)
+            {
+                GameObject newObj = (GameObject)Instantiate(meteors[i]);
+                newObj.transform.parent = gameObject.transform;
+                timers[i] = timeGaps[i];
+            }
+        }
 	}
 }
