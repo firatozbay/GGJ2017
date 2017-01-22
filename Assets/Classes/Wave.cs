@@ -28,9 +28,11 @@ public class Wave : MonoBehaviour {
 		p.startColor = color;
 		lines[0].SetColors(color, color);
 		lines[1].SetColors(color, color);
-        lines[0].sortingLayerName = "Foreground";
-        lines[1].sortingLayerName = "Foreground";
-        for (int i = 0; i < particles.Length; i++) {
+		lines[2].SetColors(color, color);
+		lines[0].sortingLayerName = "Foreground";
+		lines[1].sortingLayerName = "Foreground";
+		lines[2].sortingLayerName = "Foreground";
+		for (int i = 0; i < particles.Length; i++) {
 			particles[i] = Instantiate(p.gameObject).GetComponent<ParticleSystem>();
 			particles[i].transform.SetParent(gameObject.transform);
 		}
@@ -48,6 +50,7 @@ public class Wave : MonoBehaviour {
 		List<Vector3> vertices = new List<Vector3>();
 		List<Vector3> vertices1 = new List<Vector3>();
 		List<Vector3> vertices2 = new List<Vector3>();
+		List<Vector3> verticesMid = new List<Vector3>();
 		int i = 0;
 		for (float a = 180 - ANGLE; a <= 180 + ANGLE; a += ANGLE / VERTEX_DENSITY) {
 			i++;
@@ -55,7 +58,7 @@ public class Wave : MonoBehaviour {
 			if (i < opening)
 				vertices1.Add(vertices[vertices.Count - 1]);
 			else if(i >= opening && i < opening + OPENING_SPACING) {
-				//vertices.RemoveAt(vertices.Count - 1);
+				verticesMid.Add(vertices[vertices.Count - 1]);
 			} else
 				vertices2.Add(vertices[vertices.Count - 1]);
 		}
@@ -67,12 +70,20 @@ public class Wave : MonoBehaviour {
 		lines[1].SetPositions(vertices2.ToArray());
 		Vector2[] vec1 = new Vector2[vertices1.Count];
 		Vector2[] vec2 = new Vector2[vertices2.Count];
+		Vector2[] vecMid = new Vector2[vertices2.Count];
 		for (i = 0; i < vertices1.Count; i++)
 			vec1[i] = vertices1[i];
 		for (i = 0; i < vertices2.Count; i++)
 			vec2[i] = vertices2[i];
+		for (i = 0; i < verticesMid.Count; i++)
+			vecMid[i] = verticesMid[i];
 		colliders[0].points = vec1;
 		colliders[1].points = vec2;
+		colliders[2].points = vecMid;
+		verticesMid.Insert(0, vertices1[vertices1.Count - 1]);
+		verticesMid.Add(vertices2[0]);
+		lines[2].SetVertexCount(verticesMid.Count);
+		lines[2].SetPositions(verticesMid.ToArray());
 		for (i = 0; i < particles.Length; i++) {
 			particles[i].transform.localPosition = vertices[i * (vertices.Count / particles.Length)];
 		}
