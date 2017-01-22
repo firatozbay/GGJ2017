@@ -15,7 +15,8 @@ public class Emitter : MonoBehaviour {
 	void Update () {
 		timer -= Time.deltaTime;
 		if(timer <= 0) {
-			Instantiate(wavePrefab, transform.position, Quaternion.identity);
+			GameObject newobj = (GameObject)Instantiate(wavePrefab, transform.position, Quaternion.identity);
+            newobj.transform.parent = gameObject.transform;
 			timer = EMISSION_RATE;
         }
     }

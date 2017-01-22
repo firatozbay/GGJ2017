@@ -168,4 +168,8 @@ public class Player : MonoBehaviour {
 	void FixedUpdate() {
 		color = -1;
 	}
+    public void SetDeathBool(bool value)
+    {
+        animator.SetBool("Dead", value);
+    }
 }

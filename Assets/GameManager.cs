@@ -121,6 +121,8 @@ public class GameManager : MonoBehaviour {
     }
     public void GameOver()
     {
+        Player.Instance.isDead = true;
+        Player.Instance.SetDeathBool(Player.Instance.isDead);
         gamestate = GameState.PostGame;
         levelTimer = POSTGAME_TIME;
         levels[currentLevel].SetActive(false);
@@ -134,6 +136,9 @@ public class GameManager : MonoBehaviour {
     }
     void PlayAnimation(int level)
     {
+        Player.Instance.isDead = false;
+        Player.Instance.SetDeathBool(Player.Instance.isDead);
+        Player.Instance.SetInitialPosition();
         WaveText.gameObject.SetActive(false);
         WaveText.text = "WAVE " + level;
         WaveText.gameObject.SetActive(true);
@@ -146,7 +151,6 @@ public class GameManager : MonoBehaviour {
         counts[0] = true;
         counts[1] = true;
         counts[2] = true;
-        Player.Instance.SetInitialPosition();
     }
     void StartLevel()
     {
@@ -175,6 +179,8 @@ public class GameManager : MonoBehaviour {
     public void OnPlayButtonPressed()
     {
         levelTimer = -1; //In order to activate time called play
+
+        Player.Instance.SetInitialPosition();
         MainMenuButton.gameObject.SetActive(false);
         PlayButton.gameObject.SetActive(false);
         
