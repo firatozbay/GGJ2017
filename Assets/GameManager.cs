@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
         else if(gamestate == GameState.Ingame)
         {
             levelTimer -= Time.deltaTime;
-            TimerText.text = "REMAINING TIME: " + (int)levelTimer + "...";
+            TimerText.text = "REMAINING TIME: " + (int)levelTimer;
             if (levelTimer < 0)
             {
                 CounterText.gameObject.SetActive(false);
