@@ -4,14 +4,14 @@ using System.Collections;
 public class Player : MonoBehaviour {
     private Animator animator;
     public Transform EmmisionCenter;
-    public CameraController camController;
+
 
     public GameObject bulletPrefab;
     private GameObject bullet;
     private float timer;
     private float FIRE_TIMER = 0.25f;
     private bool holdgun;
-
+    public float speed = 1;
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator>();
@@ -58,13 +58,13 @@ public class Player : MonoBehaviour {
         if (RotatedUp(transform.position)) {
             if (Input.GetKey(KeyCode.S))
             {
-                transform.Translate(new Vector3( 0, -0.05f, 0));
+                transform.Translate(new Vector3( 0, speed * -0.05f, 0));
             }
         }
         if (RotatedDown(transform.position)) { 
             if (Input.GetKey(KeyCode.W))
             {
-                transform.Translate(new Vector3( 0, 0.05f, 0));
+                transform.Translate(new Vector3( 0, speed * 0.05f, 0));
             }
         }
         if (RotatedDown(transform.position) && RotatedUp(transform.position))
@@ -75,12 +75,12 @@ public class Player : MonoBehaviour {
             }
             if (Input.GetKey(KeyCode.A))
             {
-                transform.Translate(new Vector3(-0.05f, 0, 0));
+                transform.Translate(new Vector3(speed * -0.05f, 0, 0));
             }
         }
         else
         {
-            transform.Translate(new Vector3(-0.05f, 0, 0),Space.World);
+            transform.Translate(new Vector3(speed * -0.05f, 0, 0),Space.World);
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(new Vector3(0.05f, 0, 0));
+            transform.Translate(new Vector3(speed*0.05f, 0, 0));
         }
 
     }
