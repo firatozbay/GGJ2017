@@ -146,9 +146,11 @@ public class GameManager : MonoBehaviour {
         counts[0] = true;
         counts[1] = true;
         counts[2] = true;
+        Player.Instance.SetInitialPosition();
     }
     void StartLevel()
     {
+        Player.Instance.Reactivate();
         gamestate = GameState.Ingame;
         levelTimer = LevelTime[currentLevel];
         levels[currentLevel].SetActive(true);
@@ -175,6 +177,7 @@ public class GameManager : MonoBehaviour {
         levelTimer = -1; //In order to activate time called play
         MainMenuButton.gameObject.SetActive(false);
         PlayButton.gameObject.SetActive(false);
+        
     }
     public void OnMainMenuButtonPressed()
     {
