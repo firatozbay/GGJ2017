@@ -29,6 +29,7 @@ public class Meteor : MonoBehaviour
         transform.parent.position = EmmisionCenter.position;
         meteorCenter = transform.parent;
         animator = GetComponent<Animator>();
+		gameObject.AddComponent<MeteorInfo>();
     }
 
     // Update is called once per frame

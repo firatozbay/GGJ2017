@@ -3,32 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Wave : MonoBehaviour {
+	public static Color[] COLORS = { Color.red, Color.blue, Color.green };
+	public static int lastColor = -1;
+
 	private const float TARGET_SIZE = 50;
 	private const float SPEED = 5;
 	private const int VERTEX_DENSITY = 60 / 2;
 	private const float ANGLE = 120 / 2;
 	private const int PARTICLE_AMOUNT = 30;
 	private const float OPENING_SPACING = 2;
-	private static Color[] COLORS = { Color.red, Color.blue, Color.green };
 
 	private float currentSize;
 	private LineRenderer[] lines;
 	private EdgeCollider2D[] colliders;
 	private ParticleSystem[] particles;
 	private int opening;
-	private Color color;
+	private int color;
 
-	void Start () {
-		color = COLORS[(int)Random.Range(0, COLORS.Length)];
+	void Start() {
+		while ((color = (int)Random.Range(0, COLORS.Length)) == lastColor) ;
+		lastColor = color;
 		currentSize = 0;
 		lines = GetComponentsInChildren<LineRenderer>();
 		colliders = GetComponentsInChildren<EdgeCollider2D>();
 		ParticleSystem p = GetComponentInChildren<ParticleSystem>();
 		particles = new ParticleSystem[PARTICLE_AMOUNT];
-		p.startColor = color;
-		lines[0].SetColors(color, color);
-		lines[1].SetColors(color, color);
-		lines[2].SetColors(color, color);
+		p.startColor = COLORS[color];
+		lines[0].SetColors(COLORS[color], COLORS[color]);
+		lines[1].SetColors(COLORS[color], COLORS[color]);
+		lines[2].SetColors(COLORS[color], COLORS[color]);
 		lines[0].sortingLayerName = "Foreground";
 		lines[1].sortingLayerName = "Foreground";
 		lines[2].sortingLayerName = "Foreground";
