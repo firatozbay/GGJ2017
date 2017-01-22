@@ -12,20 +12,23 @@ public class Wave : MonoBehaviour {
 	private const float ANGLE = 120 / 2;
 	private const int PARTICLE_AMOUNT = 30;
 	private const float OPENING_SPACING = 2;
+	
+	public int color;
 
 	private float currentSize;
 	private LineRenderer[] lines;
 	private EdgeCollider2D[] colliders;
+	private PolygonCollider2D trigger;
 	private ParticleSystem[] particles;
 	private int opening;
-	private int color;
 
 	void Start() {
 		while ((color = (int)Random.Range(0, COLORS.Length)) == lastColor) ;
 		lastColor = color;
-		currentSize = 0;
+		currentSize = 1;
 		lines = GetComponentsInChildren<LineRenderer>();
 		colliders = GetComponentsInChildren<EdgeCollider2D>();
+		trigger = GetComponentInChildren<PolygonCollider2D>();
 		ParticleSystem p = GetComponentInChildren<ParticleSystem>();
 		particles = new ParticleSystem[PARTICLE_AMOUNT];
 		p.startColor = COLORS[color];
@@ -40,11 +43,13 @@ public class Wave : MonoBehaviour {
 			particles[i].transform.SetParent(gameObject.transform);
 		}
 		opening = (int)Mathf.Round(Random.Range(24, (VERTEX_DENSITY * 2 - 23)));
+		RefreshLine();
+		currentSize = 0;
 	}
 	
 	void Update () {
 		currentSize += Time.deltaTime * SPEED;
-		RefreshLine();
+		transform.localScale = new Vector3(currentSize, currentSize, currentSize);
 		if (currentSize >= TARGET_SIZE)
 			Destroy(gameObject);
 	}
@@ -73,18 +78,19 @@ public class Wave : MonoBehaviour {
 		lines[1].SetPositions(vertices2.ToArray());
 		Vector2[] vec1 = new Vector2[vertices1.Count];
 		Vector2[] vec2 = new Vector2[vertices2.Count];
-		Vector2[] vecMid = new Vector2[vertices2.Count];
 		for (i = 0; i < vertices1.Count; i++)
 			vec1[i] = vertices1[i];
 		for (i = 0; i < vertices2.Count; i++)
 			vec2[i] = vertices2[i];
-		for (i = 0; i < verticesMid.Count; i++)
-			vecMid[i] = verticesMid[i];
 		colliders[0].points = vec1;
 		colliders[1].points = vec2;
-		colliders[2].points = vecMid;
 		verticesMid.Insert(0, vertices1[vertices1.Count - 1]);
 		verticesMid.Add(vertices2[0]);
+		Vector2[] vecMid = new Vector2[verticesMid.Count];
+		for (i = 0; i < verticesMid.Count; i++)
+			vecMid[i] = verticesMid[i];
+		trigger.pathCount = vecMid.Length;
+		trigger.points = vecMid;
 		lines[2].SetVertexCount(verticesMid.Count);
 		lines[2].SetPositions(verticesMid.ToArray());
 		for (i = 0; i < particles.Length; i++) {

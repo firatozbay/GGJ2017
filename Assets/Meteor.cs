@@ -95,6 +95,6 @@ public class Meteor : MonoBehaviour
     }
     void DestroyEvent()
     {
-        Destroy(transform.parent.gameObject);
+		//Destroy(transform.parent.gameObject);
     }
 }

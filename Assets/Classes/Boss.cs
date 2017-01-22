@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Boss : MonoBehaviour {
-	private SpriteRenderer shield;
-	private float shieldTimer;
-	private int color;
+	private const int MAX_HEALTH = 6;
 
-	void Start () {
-		shield = transform.GetChild(0).GetComponent<SpriteRenderer>();
-		shieldTimer = 0;
+	private Image healthBar;
+	private int health;
+
+	void Start() {
+		health = MAX_HEALTH;
+		healthBar = GetComponentInChildren<Image>();
+		healthBar.fillAmount = (float)health / MAX_HEALTH;
 	}
-	
-	void Update () {
-		shieldTimer -= Time.deltaTime;
-		if(shieldTimer <= 0) {
-			int newColor;
-			while((newColor = (int)Random.Range(0, Wave.COLORS.Length)) == color) ;
-			color = newColor;
-			shield.color = Wave.COLORS[color];
-            shieldTimer = Random.Range(3, 6);
+
+	void OnTriggerEnter2D(Collider2D col) {
+		Bullet bul = col.GetComponent<Bullet>();
+		if (bul) {
+			health -= bul.damage;
+			healthBar.fillAmount = Mathf.Max((float)health / MAX_HEALTH, 0);
+			if(health <= 0) {
+				GetComponent<Animator>().SetTrigger("Die");
+			}
 		}
 	}
 }

@@ -15,6 +15,18 @@ public class Player : MonoBehaviour {
     private bool holdgun;
     public float speed = 1;
     private Vector2 initialPosition;
+	private LensFlare flare;
+
+	private int _color;
+	public int color {
+		get {
+			return _color;
+		}
+		set {
+			_color = value;
+			flare.color = color < 0 ? Color.black : Wave.COLORS[color];
+		}
+	}
 
     public bool isDead;
 
@@ -24,6 +36,7 @@ public class Player : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
+		flare = GetComponent<LensFlare>();
         isDead = false;
         animator = GetComponent<Animator>();
         transform.parent.position = EmmisionCenter.position;
@@ -31,6 +44,8 @@ public class Player : MonoBehaviour {
         
         timer = 0;
         holdgun = false;
+
+		color = -1;
     }
     // Update is called once per frame
     void Update()
@@ -48,10 +63,6 @@ public class Player : MonoBehaviour {
                     timer -= Time.deltaTime;
                 }
             }
-            if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
-            {
-                animator.SetTrigger("ButtonUp");
-            }
 
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -64,6 +75,7 @@ public class Player : MonoBehaviour {
                 {
                     bullet = (GameObject)Instantiate(bulletPrefab, transform.position + new Vector3(1, 0.2f, 0), Quaternion.identity);
                     bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(9f, 0);//ToDo Change Later to pointer
+					bullet.GetComponent<Bullet>().color = color;
                 }
                 else
                 {
@@ -93,10 +105,6 @@ public class Player : MonoBehaviour {
             }
             if (RotatedDown(transform.position) && RotatedUp(transform.position))
             {
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    animator.SetTrigger("PressLeft");
-                }
                 if (Input.GetKey(KeyCode.A))
                 {
                     transform.Translate(new Vector3(speed * -0.05f, 0, 0));
@@ -106,16 +114,13 @@ public class Player : MonoBehaviour {
             {
                 transform.Translate(new Vector3(speed * -0.05f, 0, 0), Space.World);
             }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                animator.SetTrigger("PressRight");
-            }
             if (Input.GetKey(KeyCode.D))
             {
                 transform.Translate(new Vector3(speed * 0.05f, 0, 0));
-            }
-        }
+			}
+			animator.SetBool("Left", Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D));
+			animator.SetBool("Right", !Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D));
+		}
     }
     public void AnimationEnded()
     {
@@ -159,4 +164,8 @@ public class Player : MonoBehaviour {
     {
         isDead = false;
     }
+
+	void FixedUpdate() {
+		color = -1;
+	}
 }

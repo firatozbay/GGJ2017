@@ -33,6 +33,10 @@ public class MeteorInfo : MonoBehaviour {
 		prevDist = dist;
 	}
 
+	void OnDisable() {
+		Destroy(meteorWarning.gameObject);
+	}
+
 	public static float DistancePointToRectangle(Vector2 point, Rect rect) {
 		//  Calculate a distance between a point and a rectangle.
 		//  The area around/in the rectangle is defined in terms of
