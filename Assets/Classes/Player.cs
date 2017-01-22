@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
         if (Translated(transform.position))
         {
             Debug.Log("Game Over");
-            Debug.Break();
+            GameManager.Instance.GameOver();
         }
         if (RotatedUp(transform.position)) {
             if (Input.GetKey(KeyCode.S))

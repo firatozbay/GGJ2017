@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour {
     private float levelTimer;
 
     public const float PREGAME_TIME = 3;
-    public const float POSTLEVEL_TIME = 1;
+    public const float POSTLEVEL_TIME = 15;
     public const float POSTGAME_TIME = 15;
     public float[] LevelTime;
     public GameObject[] levels;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour {
     public Text TimerText;
     public Text WaveText;
 
+    public Button PlayButton;
+    public Button MainMenuButton;
+    
     private bool[] counts;
     void Awake()
     {
@@ -95,6 +99,8 @@ public class GameManager : MonoBehaviour {
             if (levelTimer < 0)
             {
                 TimerText.text = "";
+                MainMenuButton.gameObject.SetActive(false);
+                PlayButton.gameObject.SetActive(false);
                 NextLevel();
                 gamestate = GameState.None;
             }
@@ -106,6 +112,8 @@ public class GameManager : MonoBehaviour {
             if (levelTimer < 0)
             {
                 TimerText.text = "";
+                MainMenuButton.gameObject.SetActive(false);
+                PlayButton.gameObject.SetActive(false);
                 PlayAnimation(currentLevel+1);
                 gamestate = GameState.None;
             }
@@ -116,6 +124,9 @@ public class GameManager : MonoBehaviour {
         gamestate = GameState.PostGame;
         levelTimer = POSTGAME_TIME;
         levels[currentLevel].SetActive(false);
+        PlayButton.GetComponentInChildren<Text>().text = "RETRY";
+        MainMenuButton.gameObject.SetActive(true);
+        PlayButton.gameObject.SetActive(true);
     }
     public void NextLevel() //Called upon a UI Button Call or next level timer
     {
@@ -127,6 +138,7 @@ public class GameManager : MonoBehaviour {
         WaveText.text = "WAVE " + level;
         WaveText.gameObject.SetActive(true);
     }
+
     public void AnimationEnd()
     {
         gamestate = GameState.Pregame;
@@ -146,6 +158,9 @@ public class GameManager : MonoBehaviour {
         gamestate = GameState.PostLevel;
         levelTimer = POSTLEVEL_TIME;
         levels[currentLevel].SetActive(false);
+        PlayButton.GetComponentInChildren<Text>().text = "NEXT LEVEL";
+        MainMenuButton.gameObject.SetActive(true);
+        PlayButton.gameObject.SetActive(true);
         if (currentLevel < levels.Length)
         {
             gamestate = GameState.PostLevel;
@@ -153,5 +168,16 @@ public class GameManager : MonoBehaviour {
         } else {
             gamestate = GameState.PreBossLevel;
         }
+
+    }
+    public void OnPlayButtonPressed()
+    {
+        levelTimer = -1; //In order to activate time called play
+        MainMenuButton.gameObject.SetActive(false);
+        PlayButton.gameObject.SetActive(false);
+    }
+    public void OnMainMenuButtonPressed()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
