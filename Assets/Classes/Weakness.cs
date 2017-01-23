@@ -12,6 +12,7 @@ public class Weakness : MonoBehaviour {
 		Player player = col.GetComponent<Player>();
 		if(player) {
 			player.color = color;
+            Time.timeScale = 0.25f;
 		}
 	}
 }

@@ -167,6 +167,7 @@ public class Player : MonoBehaviour {
 
 	void FixedUpdate() {
 		color = -1;
+        Time.timeScale = 1;
 	}
     public void SetDeathBool(bool value)
     {
